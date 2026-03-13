@@ -159,7 +159,7 @@ jobs:
             cp /usr/lib/x86_64-linux-gnu/libdbusmenu-gtk3.so.4* src/launch-app/extern/libappindicator3/x86_64-linux-gnu/ || true
           fi
 
-          python configurator.py --config-file=test/config.json -p ${{ matrix.platforms }} -b
+          python configurator.py --config-file=config.json -p ${{ matrix.platforms }} -b
 
           # Remove swapfile
           sudo swapoff /swapfile_ || true

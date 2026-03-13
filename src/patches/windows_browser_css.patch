@@ -7,7 +7,7 @@
 +/* Neutron stuff. remove unwanted ui like tabs and url bar */
 +#urlbar { visibility: collapse !important; }
 +#navigator-toolbox { display: none !important; }
-+#popup-notification { visibility: visible !important; }
++#notification-popup { visibility: visible !important; }
 +
  #menubar-items {
    flex-direction: column; /* for flex hack */

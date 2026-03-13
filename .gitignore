@@ -202,9 +202,6 @@ packages/flatpak/staging
 /src/launch-app/.cache/
 /src/launch-app/compile_flags.txt
 
-# Ignore any configs
-/config.json
-
 # Python virtual environment
 /.venv/
 .venv/
