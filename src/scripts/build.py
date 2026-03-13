@@ -175,7 +175,7 @@ def main():
         "src/packages/appimage/neutron.AppImage/neutron.desktop",
         "src/packages/appimage/neutron.AppImage/AppRun",
 
-        "src/packages/flatpak/io.github.xootzie.neutron.yml",
+        "src/packages/flatpak/io.github.xootzie.nevail.yml",
         "src/packages/flatpak/neutron.desktop",
 
         "src/packages/debian/install.in",
