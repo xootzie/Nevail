@@ -1,0 +1,10 @@
+[Desktop Entry]
+Name=NEUTRON_APP_NAME
+Exec=NEUTRON_INTERNAL_APP_NAME
+Icon=NEUTRON_INTERNAL_APP_NAME
+Type=Application
+Categories=Network;InstantMessaging;
+Comment=NEUTRON_PROJECT_DESCRIPTION
+Terminal=false
+StartupNotify=false
+StartupWMClass=NEUTRON_INTERNAL_APP_NAME

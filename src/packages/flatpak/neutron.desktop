@@ -1,0 +1,9 @@
+[Desktop Entry]
+Name=NEUTRON_APP_NAME
+Exec=launch-app
+Icon=io.github.xootzie.NEUTRON_APP_NAME_STRIPPED
+Type=Application
+Categories=Network;InstantMessaging;Chat;
+Comment=NEUTRON_PROJECT_DESCRIPTION
+Terminal=false
+StartupNotify=false

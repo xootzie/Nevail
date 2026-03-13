@@ -1,0 +1,23 @@
+--- a/build/appini_header.py
++++ b/build/appini_header.py
+@@ -57,6 +57,11 @@
+     else:
+         appdata["App:sourceurl"] = "NULL"
+ 
++    if "App:useragentname" in appdata:
++        appdata["App:useragentname"] = '"%s"' % appdata["App:useragentname"]
++    else:
++        appdata["App:useragentname"] = "NULL"
++
+     if "AppUpdate:url" not in appdata:
+         appdata["AppUpdate:url"] = ""
+ 
+@@ -75,7 +80,7 @@
+                  "%(Gecko:maxversion)s",
+                  "%(Crash Reporter:serverurl)s",
+                  %(App:profile)s,
+-                 NULL, // UAName
++                 %(App:useragentname)s,
+                  %(App:sourceurl)s,
+                  "%(AppUpdate:url)s"
+              };"""

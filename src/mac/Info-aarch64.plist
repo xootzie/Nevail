@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CFBundleDevelopmentRegion</key>
+	<string>English</string>
+	<key>CFBundleExecutable</key>
+	<string>launch-app</string>
+	<key>CFBundleGetInfoString</key>
+	<string>NEUTRON_APP_NAME NEUTRON_APP_VERSION</string>
+	<key>CFBundleIconFile</key>
+	<string>firefox.icns</string>
+	<key>CFBundleIdentifier</key>
+	<string>org.neutron.NEUTRON_INTERNAL_APP_NAME</string>
+	<key>CFBundleInfoDictionaryVersion</key>
+	<string>6.0</string>
+	<key>CFBundleName</key>
+	<string>NEUTRON_APP_NAME</string>
+	<key>CFBundlePackageType</key>
+	<string>APPL</string>
+	<key>CFBundleShortVersionString</key>
+	<string>NEUTRON_APP_VERSION</string>
+	<key>CFBundleSignature</key>
+	<string>MOZB</string>
+	<key>CFBundleVersion</key>
+	<string>12224.2.1</string>
+	<key>NSUserActivityTypes</key>
+	<array>
+		<string>NSUserActivityTypeBrowsingWeb</string>
+	</array>
+	<key>NSAppleScriptEnabled</key>
+	<true/>
+	<key>LSApplicationCategoryType</key>
+	<string>public.app-category.productivity</string>
+	<key>LSEnvironment</key>
+	<dict>
+		<key>MallocNanoZone</key>
+		<string>0</string>
+		<key>SYSTEM_VERSION_COMPAT</key>
+		<string>0</string>
+	</dict>
+	<key>LSFileQuarantineEnabled</key>
+	<true/>
+	<key>LSMinimumSystemVersion</key>
+	<string>10.15.0</string>
+  <key>NSSupportsAutomaticGraphicsSwitching</key>
+  <true/>
+  <key>NSRequiresAquaSystemAppearance</key>
+  <false/>
+  <key>NSPrincipalClass</key>
+  <string>GeckoNSApplication</string>
+	<key>SMPrivilegedExecutables</key>
+	<dict>
+		<key>org.neutron.NEUTRON_INTERNAL_APP_NAME.updater</key>
+		<string>identifier "org.neutron.NEUTRON_INTERNAL_APP_NAME.updater"</string>
+	</dict>
+  <key>MozillaDeveloperRepoPath</key>
+  <string></string>
+  <key>MozillaDeveloperObjPath</key>
+  <string></string>
+
+  <key>NSCameraUsageDescription</key>
+  <string>Only sites you allow within NEUTRON_APP_NAME will be able to use the camera.</string>
+
+  <key>NSMicrophoneUsageDescription</key>
+  <string>Only sites you allow within NEUTRON_APP_NAME will be able to use the microphone.</string>
+</dict>
+</plist>

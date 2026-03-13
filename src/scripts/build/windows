@@ -1,0 +1,85 @@
+#!/bin/bash
+
+set -euo pipefail
+
+export MOZBUILD_STATE_PATH=$PWD/.mozbuild
+export PATH="$PATH:$MOZBUILD_STATE_PATH/git-cinnabar"
+export mozbuild=$MOZBUILD_STATE_PATH
+
+appDir=$PWD
+
+mkdir -p $MOZBUILD_STATE_PATH
+
+cd mozilla-unified
+
+cp -r ../src/changed/* .
+cp ../src/mozconfig.windows mozconfig
+
+# Add cross compile target
+rustup target add x86_64-pc-windows-msvc
+
+cargo install cargo-download
+
+export MOZ_WINDOWS_RS_DIR=$MOZBUILD_STATE_PATH/windows_rs
+if [ -d $MOZ_WINDOWS_RS_DIR ]; then
+	rm -rf $MOZ_WINDOWS_RS_DIR
+fi
+cargo download -x windows=0.62.2 -o $MOZ_WINDOWS_RS_DIR
+
+# Install toolchains
+cd $MOZBUILD_STATE_PATH
+
+$appDir/mozilla-unified/mach artifact toolchain --from-build mingw32-rust
+$appDir/mozilla-unified/mach artifact toolchain --from-build linux64-upx
+$appDir/mozilla-unified/mach artifact toolchain --from-build linux64-wine
+$appDir/mozilla-unified/mach artifact toolchain --from-build linux64-sccache
+$appDir/mozilla-unified/mach artifact toolchain --from-build linux64-cbindgen
+$appDir/mozilla-unified/mach artifact toolchain --from-build linux64-nasm
+$appDir/mozilla-unified/mach artifact toolchain --from-build linux64-node
+$appDir/mozilla-unified/mach artifact toolchain --from-build linux64-clang-mingw-x64
+$appDir/mozilla-unified/mach artifact toolchain --from-build linux64-mingw32-nsis
+$appDir/mozilla-unified/mach artifact toolchain --from-build linux64-mingw-fxc2-x86
+$appDir/mozilla-unified/mach artifact toolchain --from-build linux64-dump_syms
+$appDir/mozilla-unified/mach artifact toolchain --from-build sysroot-x86_64-linux-gnu
+$appDir/mozilla-unified/mach artifact toolchain --from-build sysroot-wasm32-wasi
+$appDir/mozilla-unified/mach artifact toolchain --from-build winappsdk-x86_64-pc-windows-msvc
+
+cd $appDir/mozilla-unified
+
+ln -s $MOZBUILD_STATE_PATH/wine/bin/wine $MOZBUILD_STATE_PATH/wine/bin/wine64 
+
+# Get windows sdk if needed
+if [ ! -d $MOZBUILD_STATE_PATH/win-cross ]; then
+	./mach --no-interactive python --virtualenv build taskcluster/scripts/misc/get_vs.py build/vs/vs2026.yaml $MOZBUILD_STATE_PATH/win-cross/vs
+	cd $appDir/mozilla-unified
+fi
+
+cp "$MOZBUILD_STATE_PATH/win-cross/vs/Windows Kits/10/bin/10.0.26100.0/x64/fxc.exe" "$MOZBUILD_STATE_PATH/win-cross/vs/Windows Kits/10/bin/10.0.26100.0/x64/fxc2.exe"
+
+patch -N -p1 < ../src/windows/fxc.patch || true
+
+with_ccache=""
+# Only enable sccache if sccache command is found
+if command -v sccache >&2; then
+    with_ccache="--with-ccache=sccache"
+fi
+
+./mach configure $with_ccache
+./mach build
+./mach package
+
+# Change the setup exe
+mkdir $appDir/work
+cp obj-x86_64-pc-mingw32/dist/NEUTRON_INTERNAL_APP_NAME-*.installer.exe $appDir/work/ffSetup-win64.exe
+cd $appDir/work
+7z x ffSetup-win64.exe
+mv core NEUTRON_INTERNAL_APP_NAME
+rm setup.exe
+cd NEUTRON_INTERNAL_APP_NAME
+cd ..
+cp ../src/windows/NEUTRON_INTERNAL_APP_NAME.ico NEUTRON_INTERNAL_APP_NAME/
+mkdir NEUTRON_INTERNAL_APP_NAME/distribution
+cp ../src/distribution/policies-windows.json NEUTRON_INTERNAL_APP_NAME/distribution/policies.json
+cp ../src/open-in-default-browser/open-in-default-browser.bat NEUTRON_INTERNAL_APP_NAME/ 
+
+cd $appDir

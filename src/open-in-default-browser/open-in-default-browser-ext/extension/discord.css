@@ -1,0 +1,12 @@
+[data-list-item-id="guildsnav___app-download-button"],
+[data-list-item-id="guildsnav___app-download-button"] * {
+    display: none !important;
+}
+
+[class*="mobileToolbar"] {
+    display: none !important;
+}
+
+[class*="downloadLink"] {
+    display: none !important;
+}

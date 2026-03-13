@@ -1,0 +1,5 @@
+#!/bin/bash
+
+set -euo pipefail
+
+tar -cjf NEUTRON_INTERNAL_APP_NAME-linux-aarch64.tar.bz2 NEUTRON_INTERNAL_APP_NAME-linux-aarch64 

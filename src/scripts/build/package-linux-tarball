@@ -1,0 +1,28 @@
+#!/bin/bash
+
+set -euo pipefail
+
+shopt -s extglob
+
+STAGING_DIR=NEUTRON_INTERNAL_APP_NAME-linux-tarball
+
+if [ -d "$STAGING_DIR" ]; then
+    rm -rf "$STAGING_DIR"
+fi
+
+mkdir -p "$STAGING_DIR/app"
+
+# Copy the built app
+cp -r NEUTRON_INTERNAL_APP_NAME-linux-x86_64/. "$STAGING_DIR/app/"
+
+# Copy package assets (install/uninstall scripts and .desktop template)
+cp src/packages/linux-tarball/install.sh "$STAGING_DIR/install.sh"
+cp src/packages/linux-tarball/uninstall.sh "$STAGING_DIR/uninstall.sh"
+cp src/packages/linux-tarball/NEUTRON_INTERNAL_APP_NAME.desktop "$STAGING_DIR/NEUTRON_INTERNAL_APP_NAME.desktop"
+
+chmod +x "$STAGING_DIR/install.sh"
+chmod +x "$STAGING_DIR/uninstall.sh"
+
+tar -cjf "NEUTRON_INTERNAL_APP_NAME-linux-x86_64-tarball.tar.bz2" "$STAGING_DIR"
+
+rm -rf "$STAGING_DIR"

@@ -1,0 +1,32 @@
+#!/bin/bash
+
+set -euo pipefail
+
+export MOZBUILD_STATE_PATH=$PWD/.mozbuild
+
+if [ ! -d mozilla-unified ]; then
+	export tag_name=$(
+		git ls-remote --tags https://github.com/mozilla-firefox/firefox.git | \
+		grep -E "^[a-z0-9]{40}	refs/tags/FIREFOX_[0-9]*_[0-9]*(_[0-9]*)?_RELEASE" | \
+		sed "s/refs\/tags\///g" | \
+		awk '{print $2}' | \
+		sort -t_ -k2,2n -k3,3n -k4,4n -k5,5n | \
+		tail -n1
+	)
+	git clone --recursive --depth 1 --branch $tag_name --single-branch --shallow-submodules -j$(nproc) https://github.com/mozilla-firefox/firefox.git mozilla-unified
+
+	cd mozilla-unified
+
+	./mach --no-interactive bootstrap --application-choice "Firefox for Desktop" --no-system-changes
+
+	# Patch SDK min version: 26.2 not yet available as packaged SDK, lower to 26.1
+	sed -i 's/return "26.2"/return "26.1"/' build/moz.configure/toolchain.configure
+
+	echo "Applying universal patches"
+	for patch in ../src/patches/*.patch; do
+		patch -p1 < $patch
+	done
+	echo "Done applying universal patches"
+
+	cd ..
+fi

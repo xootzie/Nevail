@@ -1,0 +1,27 @@
+{
+  "appName": "Nevail",
+  "internalAppName": "nevail",
+  "url": "https://discord.com/app",
+  "logoSvgFilePath": "../resources/nevail-logo.svg",
+  "platforms": [
+    "linux",
+    "appimage",
+    "deb",
+    "linux-aarch64",
+    "appimage-aarch64",
+    "deb-aarch64",
+    "linux-tarball",
+    "flatpak",
+    "mac-arm",
+    "mac-intel"
+  ],
+  "extensionURLs": ["https://cdn-dl.angelx.win/latest"],
+  "version": "0.6.2",
+  "author": "xootzie",
+  "projectDescription": "An open-source Discord client using Firefox. With Equicord support.",
+  "projectURL": "https://github.com/xootzie/Nevail",
+  "projectHelpURL": "https://github.com/xootzie/Nevail/issues",
+  "openInDefaultBrowser": true,
+  "openInDefaultBrowserRegex": "http[s]?://discord.com",
+  "runInBackground": true
+}

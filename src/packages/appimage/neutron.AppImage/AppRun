@@ -1,0 +1,15 @@
+#!/bin/bash
+
+HERE="$(dirname "$(readlink -f "${0}")")"
+export MOZ_LEGACY_PROFILES=1
+export SNAP_NAME="firefox"
+export LD_LIBRARY_PATH="${HERE}/usr/lib${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}"
+BIN="${HERE}/usr/lib/NEUTRON_INTERNAL_APP_NAME/launch-app"
+args=$@
+NUMBER_OF_ARGS="$#"
+
+if [ $# -eq 0 ] ; then
+	$BIN
+else
+	$BIN $@
+fi

@@ -1,0 +1,42 @@
+#!/bin/bash
+
+set -euo pipefail
+
+shopt -s extglob
+
+STAGING_DIR="src/packages/flatpak/staging"
+MANIFEST="src/packages/flatpak/io.github.xootzie.neutron.yml"
+BUILD_DIR="flatpak-build"
+REPO_DIR="flatpak-repo"
+APP_ID="io.github.xootzie.NEUTRON_APP_NAME_STRIPPED"
+
+# Clean up any previous build
+rm -rf "$STAGING_DIR" "$BUILD_DIR" "$REPO_DIR"
+mkdir -p "$STAGING_DIR/app-files"
+
+# Extract the built Firefox tarball into staging (includes launch-app binary)
+tar --strip-components=1 -xf NEUTRON_INTERNAL_APP_NAME-linux-x86_64.tar.@(bz2|xz) -C "$STAGING_DIR/app-files/"
+
+# Copy distribution policies
+mkdir -p "$STAGING_DIR/distribution"
+cp src/distribution/policies-linux.json "$STAGING_DIR/distribution/policies.json"
+
+# Copy the open-in-default-browser helper
+cp src/open-in-default-browser/open-in-default-browser "$STAGING_DIR/open-in-default-browser"
+
+# Copy the desktop file and icon
+cp src/packages/flatpak/neutron.desktop "$STAGING_DIR/NEUTRON_INTERNAL_APP_NAME.desktop"
+cp src/packages/appimage/neutron.AppImage/icon256.png "$STAGING_DIR/icon256.png"
+
+# Bundle vendored shared libraries (libappindicator3 + libdbusmenu-glib)
+mkdir -p "$STAGING_DIR/vendored-libs"
+cp -P src/launch-app/extern/libappindicator3/x86_64-linux-gnu/*.so* "$STAGING_DIR/vendored-libs/"
+
+# Build the Flatpak
+flatpak-builder --force-clean "$BUILD_DIR" "$MANIFEST" --repo="$REPO_DIR"
+
+# Create a single-file .flatpak bundle for distribution
+flatpak build-bundle "$REPO_DIR" "NEUTRON_INTERNAL_APP_NAME-x86_64.flatpak" "$APP_ID"
+
+# Clean up staging and build dirs
+rm -rf "$STAGING_DIR" "$BUILD_DIR" "$REPO_DIR"
