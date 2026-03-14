@@ -15,7 +15,7 @@
     "mac-arm",
     "mac-intel"
   ],
-  "extensionURLs": ["https://cdn-dl.angelx.win/latest"],
+  "extensionURLs": [],
   "version": "1.0.0",
   "author": "xootzie",
   "projectDescription": "An open-source Discord client using Firefox. With Equicord support.",

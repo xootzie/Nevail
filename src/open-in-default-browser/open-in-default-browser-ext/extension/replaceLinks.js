@@ -18,7 +18,7 @@ function changeLinks() {
   var links = document.getElementsByTagName("a"); 
   for(var i=0,l=links.length; i<l; i++) {
      loc = links[i].href;
-     if ((links[i].href.substring(0, 8) == "https://" || links[i].href.substring(0, 7 == "http://")) && !exclude.test(links[i].href)){
+     if ((links[i].href.substring(0, 8) == "https://" || links[i].href.substring(0, 7) == "http://") && !exclude.test(links[i].href)){
         links[i].href = "open:" + links[i].href;
      }
   }

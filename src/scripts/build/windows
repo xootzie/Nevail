@@ -80,6 +80,8 @@ cd ..
 cp ../src/windows/NEUTRON_INTERNAL_APP_NAME.ico NEUTRON_INTERNAL_APP_NAME/
 mkdir NEUTRON_INTERNAL_APP_NAME/distribution
 cp ../src/distribution/policies-windows.json NEUTRON_INTERNAL_APP_NAME/distribution/policies.json
+mkdir -p NEUTRON_INTERNAL_APP_NAME/distribution/extensions
+cp ../equicord.xpi NEUTRON_INTERNAL_APP_NAME/distribution/extensions/firefox@equicord.org.xpi
 cp ../src/open-in-default-browser/open-in-default-browser.bat NEUTRON_INTERNAL_APP_NAME/ 
 
 cd $appDir

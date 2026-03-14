@@ -209,7 +209,6 @@ def main():
         "NEUTRON_OPEN_IN_DEFAULT_BROWSER": str(appinfo["openInDefaultBrowser"]).lower(),
         "NEUTRON_SHOULD_RUN_IN_BACKGROUND": str(appinfo["runInBackground"]).lower(),
         "NEUTRON_APP_VERSION": appinfo["version"],
-        "NEUTRON_EXTENSION_URLS": str(appinfo["extensionURLs"]).replace("'", '"'),
         "NEUTRON_SHOULD_OPEN_IN_DEFAULT_BROWSER": str(int(appinfo["openInDefaultBrowser"])),
         "NEUTRON_AUTHOR_STRIPPED": appinfo["author"].replace(" ", ""),
         "NEUTRON_AUTHOR": appinfo["author"],
@@ -224,6 +223,10 @@ def main():
     replace_placeholders(placeholder_files, placeholders)
 
     # Finally, lets start building.
+    if not build("equicord"):
+        print("Couldn't build the Equicord extension from source.")
+        exit(1)
+
     if not build("download-firefox-source"):
         print("Couldn't download the Firefox source code.")
         exit(1)

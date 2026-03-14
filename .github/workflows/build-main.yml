@@ -155,9 +155,8 @@ jobs:
 
           pip install -r requirements.txt
 
-          if [ "${{ matrix.name }}" = "linux-x86_64" ]; then
-            cp /usr/lib/x86_64-linux-gnu/libdbusmenu-gtk3.so.4* src/launch-app/extern/libappindicator3/x86_64-linux-gnu/ || true
-          fi
+          # Install pnpm (required to build Equicord from source)
+          npm install -g pnpm
 
           python configurator.py --config-file=config.json -p ${{ matrix.platforms }} -b
 

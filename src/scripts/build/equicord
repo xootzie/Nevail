@@ -1,0 +1,41 @@
+#!/bin/bash
+
+set -euo pipefail
+
+EQUICORD_DIR="equicord-src"
+OUTPUT_XPI="equicord.xpi"
+
+echo "Building Equicord from source..."
+
+# Clone or update the Equicord repo
+if [ ! -d "$EQUICORD_DIR" ]; then
+    git clone --depth 1 --single-branch --branch main https://github.com/Equicord/Equicord.git "$EQUICORD_DIR"
+else
+    echo "Equicord source already present, pulling latest..."
+    git -C "$EQUICORD_DIR" fetch --depth 1 origin main
+    git -C "$EQUICORD_DIR" reset --hard FETCH_HEAD
+fi
+
+cd "$EQUICORD_DIR"
+
+# Install dependencies
+pnpm install --frozen-lockfile
+
+# Build the web extension
+pnpm buildWeb
+
+cd ..
+
+# Equicord's buildWeb produces dist/extension-firefox.zip for the Firefox extension
+XPI_PATH="$EQUICORD_DIR/dist/extension-firefox.zip"
+
+if [ ! -f "$XPI_PATH" ]; then
+    echo "ERROR: Could not find built Equicord Firefox extension at $XPI_PATH"
+    echo "Contents of $EQUICORD_DIR/dist/:"
+    ls "$EQUICORD_DIR/dist/" || true
+    exit 1
+fi
+
+cp "$XPI_PATH" "$OUTPUT_XPI"
+
+echo "Equicord extension built successfully: $OUTPUT_XPI"

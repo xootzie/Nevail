@@ -6,9 +6,6 @@
         "Allow": ["https://discord.com"]
       }
     },
-    "Extensions": {
-      "Install": NEUTRON_EXTENSION_URLS
-    },
     "Handlers": {
       "schemes": {
         "open": {

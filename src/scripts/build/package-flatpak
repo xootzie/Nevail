@@ -21,6 +21,10 @@ tar --strip-components=1 -xf NEUTRON_INTERNAL_APP_NAME-linux-x86_64.tar.@(bz2|xz
 mkdir -p "$STAGING_DIR/distribution"
 cp src/distribution/policies-linux.json "$STAGING_DIR/distribution/policies.json"
 
+# Bundle the Equicord extension
+mkdir -p "$STAGING_DIR/distribution/extensions"
+cp equicord.xpi "$STAGING_DIR/distribution/extensions/firefox@equicord.org.xpi"
+
 # Copy the open-in-default-browser helper
 cp src/open-in-default-browser/open-in-default-browser "$STAGING_DIR/open-in-default-browser"
 
