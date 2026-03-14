@@ -100,7 +100,7 @@ static const char *_tray_register_icon(const char *icon_path) {
   if (dir) {
     strncpy(dir, icon_path, dir_len);
     dir[dir_len] = '\0';
-    gtk_icon_theme_add_search_path(gtk_icon_theme_get_default(), dir);
+    gtk_icon_theme_append_search_path(gtk_icon_theme_get_default(), dir);
     free(dir);
   }
 
