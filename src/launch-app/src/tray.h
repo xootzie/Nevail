@@ -24,6 +24,8 @@ static void tray_update(struct tray *tray);
 #if defined(TRAY_APPINDICATOR)
 
 #include <gtk/gtk.h>
+#include <stdlib.h>
+#include <string.h>
 
 // Support both legacy libappindicator3 (glibc distros) and
 // libayatana-appindicator3 (Alpine/musl and newer distros).
@@ -75,11 +77,56 @@ static GtkMenuShell *_tray_menu(struct tray_menu *m) {
   return menu;
 }
 
+// Register the icon's directory with the GTK icon theme so that
+// libappindicator can resolve it by basename on KDE Plasma / SNI hosts,
+// which do not accept absolute file paths.  Returns the basename stem
+// (filename without extension) that should be passed to app_indicator_new /
+// app_indicator_set_icon.
+static const char *_tray_register_icon(const char *icon_path) {
+  if (icon_path == NULL || icon_path[0] == '\0') {
+    return icon_path;
+  }
+
+  // Find the last '/' to split directory and filename.
+  const char *last_slash = strrchr(icon_path, '/');
+  if (last_slash == NULL) {
+    // No directory component — already a plain name; return as-is.
+    return icon_path;
+  }
+
+  // Build the directory string.
+  size_t dir_len = (size_t)(last_slash - icon_path);
+  char *dir = (char *)malloc(dir_len + 1);
+  if (dir) {
+    strncpy(dir, icon_path, dir_len);
+    dir[dir_len] = '\0';
+    gtk_icon_theme_add_search_path(gtk_icon_theme_get_default(), dir);
+    free(dir);
+  }
+
+  // Return a pointer to the filename part (still owned by the caller's string).
+  const char *filename = last_slash + 1;
+
+  // Strip the extension: find the last '.' in the filename.
+  // We store the result in a static buffer since AppIndicator holds the pointer.
+  static char stem[256];
+  const char *dot = strrchr(filename, '.');
+  if (dot != NULL) {
+    size_t stem_len = (size_t)(dot - filename);
+    if (stem_len >= sizeof(stem)) stem_len = sizeof(stem) - 1;
+    strncpy(stem, filename, stem_len);
+    stem[stem_len] = '\0';
+    return stem;
+  }
+  return filename;
+}
+
 static int tray_init(struct tray *tray) {
   if (gtk_init_check(0, NULL) == FALSE) {
     return -1;
   }
-  indicator = app_indicator_new(TRAY_APPINDICATOR_ID, tray->icon,
+  const char *icon_name = _tray_register_icon(tray->icon);
+  indicator = app_indicator_new(TRAY_APPINDICATOR_ID, icon_name,
                                 APP_INDICATOR_CATEGORY_APPLICATION_STATUS);
   app_indicator_set_status(indicator, APP_INDICATOR_STATUS_ACTIVE);
   tray_update(tray);
@@ -92,7 +139,8 @@ static int tray_loop(int blocking) {
 }
 
 static void tray_update(struct tray *tray) {
-  app_indicator_set_icon(indicator, tray->icon);
+  const char *icon_name = _tray_register_icon(tray->icon);
+  app_indicator_set_icon(indicator, icon_name);
   // GTK is all about reference counting, so previous menu should be destroyed
   // here
   app_indicator_set_menu(indicator, GTK_MENU(_tray_menu(tray->menu)));

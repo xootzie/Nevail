@@ -1,33 +1,23 @@
-app-id: io.github.xootzie.nevail_APP_NAME_STRIPPED
+app-id: io.github.xootzie.nevail
 runtime: org.freedesktop.Platform
 runtime-version: "24.08"
 sdk: org.freedesktop.Sdk
 command: launch-app
 
 finish-args:
-  # X11 + Wayland
   - --socket=x11
   - --socket=wayland
   - --share=ipc
-  # GPU acceleration
   - --device=dri
-  # Network access (Discord needs this)
   - --share=network
-  # Audio
   - --socket=pulseaudio
-  # Desktop notifications
   - --talk-name=org.freedesktop.Notifications
-  # System tray
   - --talk-name=org.kde.StatusNotifierWatcher
   - --talk-name=com.canonical.AppMenu.Registrar
-  # File picker portals
   - --talk-name=org.freedesktop.portal.Desktop
   - --talk-name=org.freedesktop.portal.FileChooser
-  # Home directory access for file uploads/downloads
   - --filesystem=xdg-download
-  # Persistent app data
   - --persist=.NEUTRON_INTERNAL_APP_NAME
-  # Env: ensure vendored libs are found
   - --env=LD_LIBRARY_PATH=/app/lib/NEUTRON_INTERNAL_APP_NAME/vendored-libs
 
 modules:
@@ -41,8 +31,8 @@ modules:
       - cp -rP vendored-libs /app/lib/NEUTRON_INTERNAL_APP_NAME/
       - mkdir -p /app/bin
       - ln -s /app/lib/NEUTRON_INTERNAL_APP_NAME/launch-app /app/bin/launch-app
-      - install -Dm644 NEUTRON_INTERNAL_APP_NAME.desktop /app/share/applications/io.github.xootzie.nevail_APP_NAME_STRIPPED.desktop
-      - install -Dm644 icon256.png /app/share/icons/hicolor/256x256/apps/io.github.xootzie.nevail_APP_NAME_STRIPPED.png
+      - install -Dm644 NEUTRON_INTERNAL_APP_NAME.desktop /app/share/applications/io.github.xootzie.nevail.desktop
+      - install -Dm644 icon256.png /app/share/icons/hicolor/256x256/apps/io.github.xootzie.nevail.png
     sources:
       - type: dir
         path: staging

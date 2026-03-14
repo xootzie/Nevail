@@ -34,13 +34,6 @@
 
 #include "tray.h"
 
-#if TRAY_APPINDICATOR
-#define TRAY_ICON1 "indicator-messages"
-#define TRAY_ICON2 "indicator-messages-new"
-#elif TRAY_WINAPI
-#define TRAY_ICON1 "icon.ico"
-#define TRAY_ICON2 "icon.ico"
-#endif
 
 typedef struct WindowStateCtx {
     tray *tray;

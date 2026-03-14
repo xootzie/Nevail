@@ -1,7 +1,7 @@
 [Desktop Entry]
 Name=NEUTRON_APP_NAME
 Exec=launch-app
-Icon=io.github.xootzie.nevail_APP_NAME_STRIPPED
+Icon=io.github.xootzie.nevail
 Type=Application
 Categories=Network;InstantMessaging;Chat;
 Comment=NEUTRON_PROJECT_DESCRIPTION

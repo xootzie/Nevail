@@ -2,7 +2,7 @@
   "appName": "Nevail",
   "internalAppName": "nevail",
   "url": "https://discord.com/app",
-  "logoSvgFilePath": "resources/nevail-logo.svg",
+  "logoSvgFilePath": "resources/nevail.svg",
   "platforms": [
     "linux",
     "deb",

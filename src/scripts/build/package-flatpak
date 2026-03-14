@@ -8,7 +8,7 @@ STAGING_DIR="src/packages/flatpak/staging"
 MANIFEST="src/packages/flatpak/io.github.xootzie.nevail.yml"
 BUILD_DIR="flatpak-build"
 REPO_DIR="flatpak-repo"
-APP_ID="io.github.xootzie.nevail_APP_NAME_STRIPPED"
+APP_ID="io.github.xootzie.nevail"
 
 # Clean up any previous build
 rm -rf "$STAGING_DIR" "$BUILD_DIR" "$REPO_DIR"
