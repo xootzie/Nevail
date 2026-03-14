@@ -28,14 +28,6 @@ cp equicord.xpi "$STAGING_DIR/distribution/extensions/firefox@equicord.org.xpi"
 # Copy the open-in-default-browser helper
 cp src/open-in-default-browser/open-in-default-browser "$STAGING_DIR/open-in-default-browser"
 
-# Copy the desktop file and icon
-cp src/packages/flatpak/neutron.desktop "$STAGING_DIR/NEUTRON_INTERNAL_APP_NAME.desktop"
-cp src/packages/appimage/neutron.AppImage/icon256.png "$STAGING_DIR/icon256.png"
-
-# Bundle vendored shared libraries (libappindicator3 + libdbusmenu-glib)
-mkdir -p "$STAGING_DIR/vendored-libs"
-cp -P src/launch-app/extern/libappindicator3/x86_64-linux-gnu/*.so* "$STAGING_DIR/vendored-libs/"
-
 # Build the Flatpak
 flatpak-builder --force-clean "$BUILD_DIR" "$MANIFEST" --repo="$REPO_DIR"
 

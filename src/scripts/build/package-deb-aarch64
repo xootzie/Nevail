@@ -13,17 +13,24 @@ cd ..
 
 cd mozilla-unified
 
-./mach repackage deb \
-    -i ../deb_work/NEUTRON_INTERNAL_APP_NAME-linux-aarch64.tar.bz2 \
-    -o ../NEUTRON_INTERNAL_APP_NAME-aarch64-NEUTRON_APP_VERSION.deb \
-    --arch aarch64 \
-    --version NEUTRON_APP_VERSION --build-number 0 \
-    --templates ../src/packages/debian \
-    --product NEUTRON_INTERNAL_APP_NAME \
-    --release-type release
+# mach repackage deb fetches firefox-l10n over the network; retry on failure.
+for attempt in 1 2 3 4 5; do
+    ./mach repackage deb \
+        -i ../deb_work/NEUTRON_INTERNAL_APP_NAME-linux-aarch64.tar.bz2 \
+        -o ../NEUTRON_INTERNAL_APP_NAME-aarch64-NEUTRON_APP_VERSION.deb \
+        --arch aarch64 \
+        --version NEUTRON_APP_VERSION --build-number 0 \
+        --templates ../src/packages/debian \
+        --product NEUTRON_INTERNAL_APP_NAME \
+        --release-type release && break
+    echo "mach repackage deb attempt $attempt failed, retrying in 15s..."
+    sleep 15
+done
 
 cd ..
 
 rm -rf deb_work
+
+unset TARGET
 
 unset TARGET
