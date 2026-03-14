@@ -78,6 +78,9 @@ modules:
 
   - name: libayatana-indicator
     buildsystem: cmake-ninja
+    build-options:
+      env:
+        PKG_CONFIG_PATH: /app/lib64/pkgconfig:/app/lib/pkgconfig
     cleanup:
       - /include
       - /lib/pkgconfig
@@ -91,6 +94,9 @@ modules:
 
   - name: libayatana-appindicator
     buildsystem: cmake-ninja
+    build-options:
+      env:
+        PKG_CONFIG_PATH: /app/lib64/pkgconfig:/app/lib/pkgconfig
     cleanup:
       - /include
       - /lib/pkgconfig
