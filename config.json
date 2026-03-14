@@ -16,7 +16,7 @@
     "mac-intel"
   ],
   "extensionURLs": ["https://cdn-dl.angelx.win/latest"],
-  "version": "DEV",
+  "version": "1.0.0",
   "author": "xootzie",
   "projectDescription": "An open-source Discord client using Firefox. With Equicord support.",
   "projectURL": "https://github.com/xootzie/Nevail",
